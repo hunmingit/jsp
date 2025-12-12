@@ -1,0 +1,114 @@
+/* 전체 배경 및 기본 폰트 */
+body {
+  margin: 0;
+  background: #f3f4f6;
+  font-family: Arial, sans-serif;
+}
+
+/* 가운데 정렬 */
+.wrapper {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* 카드 박스 */
+.box {
+  background: white;
+  padding: 40px 35px;
+  border-radius: 16px;
+  width: 100%;
+  max-width: 480px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+}
+
+/* 탭 메뉴 */
+.tabs {
+  display: flex;
+  border-bottom: 1px solid #d4d4d8;
+  margin-bottom: 25px;
+}
+
+.tabs button {
+  flex: 1;
+  padding: 14px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  color: #6b7280;
+}
+
+.tabs button.active {
+  color: #2563eb;
+  font-weight: 600;
+  border-bottom: 2px solid #2563eb;
+}
+
+/* 아이디 + 중복확인 버튼 묶음 */
+.id-box {
+  position: relative;
+  width: 100%;
+}
+
+/* 입력창 공통 스타일 */
+input {
+  width: 100%;
+  height: 46px;
+  padding: 0 14px;
+  margin-bottom: 14px;
+  border: 1px solid #c9c9cf;
+  border-radius: 8px;
+  font-size: 15px;
+  box-sizing: border-box;
+}
+
+input:focus {
+  outline: 2px solid #2563eb;
+  border-color: #2563eb;
+}
+
+/* 아이디 input (오른쪽 버튼 공간 확보) */
+.id-box input {
+  padding-right: 100px;
+}
+
+/* 중복확인 버튼 */
+.id-ck-btn {
+  position: absolute;
+  right: 5px;
+  top: 39%;
+  transform: translateY(-50%);
+
+  height: 38px;
+  padding: 0 6px;
+  color: #6b7280;
+  background: #ffffff;
+  border: 1px solid #c9c9cf;
+  border-radius: 8px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.id-ck-btn:hover {
+  background: #e5e7eb;
+}
+
+/* 제출 버튼 (로그인/회원가입 공통) */
+.login-sub-btn {
+  width: 100%;
+  height: 46px;
+  background: #2563eb;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 15px;
+  cursor: pointer;
+  margin-top: 5px;
+}
+
+.login-sub-btn:hover {
+  background: #1d4ed8;
+}
