@@ -4,6 +4,7 @@ const pId = document.getElementById("pId");
 const pPw = document.getElementById("pPw");
 const cmd = document.getElementById("cmd");
 const pPwRe = document.getElementById("pPwRe");
+const idCkBtn = document.getElementById("idCkBtn");
 
 let idCk=pwCk=pwReCk=false; // 검증
 
@@ -64,56 +65,76 @@ function login(){
 
 }
 
+// 아이디 중복확인 버튼
+idCkBtn.addEventListener("click", () => {
+  const id = pId.value.trim();
+
+  if(id === "") {
+    alert("아이디를 입력하세요.");
+    pId.focus();
+    return;
+  }
+
+  const idReg = /^[a-zA-Z0-9]{4,12}$/;
+  if(!idReg.test(id)) {
+    alert("아이디 형식이 올바르지 않습니다.");
+    return;
+  }
+
+  fetch("ProjController?cmd=idCheck&pId=" + encodeURIComponent(id))
+    .then(res => res.text())
+    .then(result => {
+      if(result === "ok") {
+        alert("사용 가능한 아이디입니다.");
+        idCk = true;
+      } else {
+        alert("이미 사용 중인 아이디입니다.");
+        idCk = false;
+        pId.focus();
+      }
+    });
+});
+
+// 아이디 변경 시 중복확인 무효화
+pId.addEventListener("input", () => {
+  idCk = false;
+});
 
 function join() {
   const id = pId.value.trim();
   const pw = pPw.value.trim();
   const pwRe = pPwRe.value.trim();
 
-  // 1. 빈 값 체크
-  if(id === "") {
-    alert("아이디를 입력하세요.");
-    pId.focus();
-    return;
-  }
-  if(pw === "") {
-    alert("비밀번호를 입력하세요.");
-    pPw.focus();
-    return;
-  }
-  if(pwRe === "") {
-    alert("비밀번호 확인을 입력하세요.");
-    pPwRe.focus();
+  // 빈 값
+  if(id === "" || pw === "" || pwRe === "") {
+    alert("모든 항목을 입력하세요.");
     return;
   }
 
-  // 2. 비밀번호 동일 체크
+  // 비밀번호 일치
   if(pw !== pwRe) {
     alert("비밀번호가 일치하지 않습니다.");
-    pPwRe.focus();
     return;
   }
 
-  // 3. 정규식 체크 
+  // 정규식
   const idReg = /^[a-zA-Z0-9]{4,12}$/;
   const pwReg = /^[a-zA-Z0-9!@#$%^&*]{6,16}$/;
 
-  if(!idReg.test(id)){
-    alert("아이디는 영문 또는 숫자 4~12자입니다.");
+  if(!idReg.test(id) || !pwReg.test(pw)) {
+    alert("입력 형식을 확인하세요.");
     return;
   }
 
-  if(!pwReg.test(pw)) {
-    alert("비밀번호는 6~16자, 영문/숫자/특수문자 허용");
+  // 🔥 중복확인 최종 체크
+  if(!idCk) {
+    alert("아이디 중복확인을 해주세요.");
     return;
   }
 
-  // 4. 서버 전송
-  console.log("회원가입 진행:", id, pw);
-
+  // 서버 전송
   document.getElementById("f").submit();
 }
-
 
 
 

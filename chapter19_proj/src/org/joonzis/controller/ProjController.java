@@ -31,6 +31,37 @@ public class ProjController extends HttpServlet {
 				path = "proj/login.jsp";
 				break;
 
+			case "idCheck": {
+								String pId = request.getParameter("pId");
+
+								MemberService service = MemberServiceImpl.getInstance();
+								boolean exists = service.isExistId(pId);
+
+								response.setContentType("text/plain; charset=utf-8");
+								response.getWriter().print(exists ? "fail" : "ok");
+								return; 
+			}
+			
+			case "join": {
+    						String pId = request.getParameter("pId");
+    						String pPw = request.getParameter("pPw");
+
+							// Service 호출
+							ProjService service = ProjServiceImpl.getInstance();
+							boolean result = service.join(pId, pPw);
+
+							if(result) {
+								request.setAttribute("msg", "회원가입 성공! 로그인 해주세요.");
+								path = "proj/login.jsp";
+							} else {
+								request.setAttribute("msg", "회원가입 실패 (중복 아이디)");
+								path = "proj/login.jsp";
+							}
+							break;
+			}
+
+
+		
 		}
 		
 		request
