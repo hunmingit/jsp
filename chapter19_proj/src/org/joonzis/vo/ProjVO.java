@@ -3,26 +3,28 @@ package org.joonzis.vo;
 import java.sql.Date;
 
 public class ProjVO {
-	private int p_idx;
+	private int pIdx;
 	private String pId, pPw;
+	private String role;       // USER / ADMIN
 	private Date pRegDate;
-	
+		
 	public ProjVO() {}
 
-	public ProjVO(int p_idx, String pId, String pPw, Date pRegDate) {
+	public ProjVO(int pIdx, String pId, String pPw, String role, Date pRegDate) {
 		super();
-		this.p_idx = p_idx;
+		this.pIdx = pIdx;
 		this.pId = pId;
 		this.pPw = pPw;
+		this.role = role;
 		this.pRegDate = pRegDate;
 	}
 
-	public int getP_idx() {
-		return p_idx;
+	public int getpIdx() {
+		return pIdx;
 	}
 
-	public void setP_idx(int p_idx) {
-		this.p_idx = p_idx;
+	public void setpIdx(int pIdx) {
+		this.pIdx = pIdx;
 	}
 
 	public String getpId() {
@@ -41,6 +43,14 @@ public class ProjVO {
 		this.pPw = pPw;
 	}
 
+	public String getRole() {
+		return role;
+	}
+
+	public void setRole(String role) {
+		this.role = role;
+	}
+
 	public Date getpRegDate() {
 		return pRegDate;
 	}
@@ -48,6 +58,7 @@ public class ProjVO {
 	public void setpRegDate(Date pRegDate) {
 		this.pRegDate = pRegDate;
 	}
+
 	
 	
 

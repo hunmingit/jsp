@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="org.joonzis.mybatis.mapper.board"> 
+    <!-- 공지글 목록 -->
+    <select id="NoticeList" resultType="org.joonzis.vo.BoardVO">
+        SELECT *
+        FROM Board
+        WHERE isNotice = 'Y'
+        ORDER BY b_idx DESC
+    </select>
+
+    <!-- 일반 게시글 목록 (페이징) -->
+    <select id="BoardList" parameterType="map" resultType="org.joonzis.vo.BoardVO">
+        SELECT *
+        FROM (
+            SELECT ROWNUM rnum, <!-- 최신글 부터 글번호 붙임 rnum은 alias -->
+            b.* <!-- 2. 게시글의 모든 컬럼을 가져와 -->
+            FROM (
+                SELECT *
+                FROM Board
+                WHERE isNotice = 'N' <!-- 공지글 제외하고 -->
+                ORDER BY b_idx DESC	 <!-- 최신글 부터 올라오게 -->
+            ) b <!-- 1. 위 조건을 b 테이블이라 부르겠다 -->
+        )
+        WHERE rnum BETWEEN #{startRow} AND #{endRow}
+    </select>
+
+    <!-- 게시글 개수 -->
+    <select id="BoardCount" resultType="int">
+        SELECT COUNT(*)
+        FROM Board
+        WHERE isNotice = 'N'
+    </select>
+</mapper>

@@ -1,0 +1,159 @@
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+
+body {
+	font-family: '맑은 고딕', Arial, sans-serif;
+	background: #f5f6f7;
+	color: #222;
+}
+
+a {
+	text-decoration: none;
+	color: inherit;
+}
+
+/* ===== 컨테이너 ===== */
+.container {
+	width: 1100px;
+	margin: 40px auto;
+	background: #fff;
+	border: 1px solid #ddd;
+}
+.board-header {
+	display: flex;                   /*https://studiomeal.com/archives/197 이 링크에 설명 잘 되어있음*/
+	justify-content: space-between;	 /*아이템들의 "사이(between)"에 균일한 간격을 만들어준다*/
+	align-items: center;
+	background: #ffffff;
+	padding: 15px 20px;
+	border-bottom: 2px solid #333;
+	background: #fff;
+}
+
+/* 왼쪽 */
+.header-left {
+	display: flex;
+	align-items: center;
+	gap: 20px;
+}
+.logo {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+}
+.logo-title{
+	font-size: 22px;
+	font-weight: bold;
+	color: #dc2626;
+}
+
+.category-form select {
+	padding: 6px 10px;
+	border: 1px solid #ccc;
+	font-size: 14px;
+}
+/* 오른쪽 */
+.header-right {
+	display: flex;
+	align-items: center;
+	gap: 15px;
+	font-size: 14px;
+}
+.header-right span {
+	font-weight: bold;
+}
+.write-btn {
+	padding: 6px 14px;
+	background: #333;
+	color: #fff;
+	border-radius: 3px;
+}
+.write-btn:hover {
+	background: #555;
+}
+/* ===== 게시판 테이블 ===== */
+.board-table {
+	width: 100%;
+	border-collapse: collapse;
+}
+.board-table thead {
+	background: #f2f2f2;
+}
+.board-table th {
+	padding: 12px;
+	border-bottom: 1px solid #ccc;
+	font-weight: bold;
+	text-align: center;
+}
+.board-table td {
+	padding: 12px;
+	border-bottom: 1px solid #eee;
+	text-align: center;
+	font-size: 14px;
+}
+
+/*글 상세 제목은 왼쪽으로 정렬 td:nth-child(2) td중 2번째 요소만 적용한다!*/
+.board-table td:nth-child(2) {
+	text-align: left;
+}
+
+
+/* 공지글 */
+.board-table tr.notice {
+	background: #fff7e6;
+	font-weight: bold;
+}
+
+.board-table tr.notice td {
+	color: #d97706;
+}
+
+/* ===== 페이지네이션 ===== */
+.paging {
+	display: flex;
+	justify-content: center;
+	gap: 6px;
+	padding: 20px 0;
+}
+
+.paging a {
+	padding: 6px 10px;
+	border: 1px solid #ccc;
+	font-size: 14px;
+}
+
+.paging a.active {
+	background: #333;
+	color: #fff;
+	border-color: #333;
+}
+
+/* ===== 검색 ===== */
+.search-box {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  padding: 15px 0 25px;
+  border-top: 1px solid #eee;
+}
+
+.search-box select,
+.search-box input {
+  padding: 6px 10px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+}
+
+.search-box input {
+  width: 300px;
+}
+
+
+
+
+
+
+

@@ -4,7 +4,34 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 
 <mapper namespace="org.joonzis.mybatis.mapper.proj"> 
+	<!-- 아이디 중복 확인 -->
+	<select id="isExistId" parameterType="string" resultType="int">
+		SELECT COUNT(*)
+		FROM proj
+		WHERE p_Id = #{pId}
+	</select>
+	<!-- 회원가입 -->
+	<insert id="insertProj" parameterType="org.joonzis.vo.ProjVO">
+    INSERT INTO proj 
+    VALUES (proj_seq.NEXTVAL, #{pId}, #{pPw}, 'user', SYSDATE)
+	</insert>
+	<!-- 로그인 -->
+	<select id="loginProj" parameterType="org.joonzis.vo.ProjVO" resultType="org.joonzis.vo.ProjVO">
+	    SELECT
+        p_id   AS pId,
+        p_pw   AS pPw,
+        role,
+        p_regdate AS pRegDate,
+        p_idx  AS pIdx
+	    FROM proj
+  		WHERE p_id = #{pId}
+   		AND p_pw = #{pPw}
+	</select>
+	
 
+
+	
+	
 </mapper>
 
 
