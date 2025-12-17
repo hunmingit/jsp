@@ -41,7 +41,31 @@ public class BoardServiceImpl implements BoardService{
         int totalCount = boardDAO.selectBoardCount();
         return new PageMaker(page, totalCount, PER_PAGE);
     }
-    
+    //글쓰기
+    @Override
+    public void writeBoard(BoardVO vo) {
+        boardDAO.writeBoard(vo);
+    }
+    //id로 글 가져와 상세보기
+    @Override
+    public BoardVO boardById(int bIdx) {
+    	return boardDAO.boardById(bIdx);
+    }
+    //조회수
+    @Override
+    public void increaseViews(int bIdx) {
+    	boardDAO.increaseViews(bIdx);   	
+    }
+    //글 수정
+    @Override
+    public void editBoard(BoardVO vo) {
+    	boardDAO.editBoard(vo);   	
+    }
+    //글 삭제
+    @Override
+    public void deleteBoard(int bIdx) {
+    	boardDAO.deleteBoard(bIdx); 
+    }
 }
 
 

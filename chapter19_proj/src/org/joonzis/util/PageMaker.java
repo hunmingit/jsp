@@ -2,8 +2,6 @@ package org.joonzis.util;
 
 public class PageMaker {
 
-
-
 	    private int page;          // 현재 페이지
 	    private int totalCount;    // 전체 게시글 수
 	    private int perPage;       // 페이지당 게시글 수
@@ -17,12 +15,7 @@ public class PageMaker {
 	    // 페이지 버튼 개수 (ex: 1 2 3 4 5)
 	    private static final int DISPLAY_PAGE_NUM = 5;
 
-	    /**
-	     * PageMaker 생성자
-	     * @param page 현재 페이지
-	     * @param totalCount 전체 게시글 수
-	     * @param perPage 페이지당 게시글 수
-	     */
+
 	    public PageMaker(int page, int totalCount, int perPage) {
 	        this.page = page;
 	        this.totalCount = totalCount;

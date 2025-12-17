@@ -38,8 +38,31 @@ public class BoardDaoImpl implements BoardDao {
     public int selectBoardCount() {
     	return sqlSession.selectOne("BoardCount");
     }
-    
-    
+    //글쓰기
+    @Override
+    public void writeBoard(BoardVO vo) {
+        sqlSession.insert("insertBoard", vo);
+    }
+    //글 상세 보기
+    @Override
+    public BoardVO boardById(int bIdx) {
+    	return sqlSession.selectOne("boardById", bIdx);
+    }
+    //조회수
+    @Override
+    public void increaseViews(int bIdx) {
+    	sqlSession.update("increaseViews", bIdx);  	
+    }
+    //글 수정하기
+    @Override
+    public void editBoard(BoardVO vo) {
+    	sqlSession.update("editBoard", vo); 	
+    }
+    //글 삭제
+    @Override
+    public void deleteBoard(int bIdx) {
+    	sqlSession.delete("deleteBoard", bIdx);   	
+    }
 	
 }
 

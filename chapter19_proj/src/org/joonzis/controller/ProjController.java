@@ -20,6 +20,7 @@ import org.joonzis.vo.BoardVO;
 import org.joonzis.vo.ProjVO;
 
 
+
 @WebServlet("/ProjController")
 public class ProjController extends HttpServlet {
 	private static final long serialVersionUID = 1L; // 직렬화 관련 경고 제거용, 의식 안 하고 항상 넣는 값
@@ -118,12 +119,164 @@ public class ProjController extends HttpServlet {
 				
 							    request.getRequestDispatcher("proj/allList.jsp").forward(request, response);
 							    return; //break주면 switch문만 종료 또 doget() forward()를 해 오류남 path만 설정할 때 break를 쓰자
-							    		//return주면 현재 매소드 즉시 종료 뒤 코드는 실행 안됨
-				
+							    		//return주면 현재 매소드 즉시 종료 뒤 코드는 실행 안됨				
 			}
+			
+			case "writePage": {	
+								//단순 화면 이동 그래서 break사용
+							    path = "proj/write.jsp";
+							    break;
+								
+			}
+			
+			case "write": 	  {	
+								//리턴vo는 case "login" 에서 로그인 성공 시 담은 사용자 정보
+								//login에서 session에 담아둠
+								HttpSession session = request.getSession();
+								//그래서 이렇게 꺼낼 수 있다.
+								ProjVO loginVO = (ProjVO) session.getAttribute("returnVO");
+								//그래서 뭐함? 로그인 했는지 확인 null이면 로그인 페이지로 이동
+								if(loginVO == null) {
+									response.sendRedirect("ProjController?cmd=loginPage");
+									return;
+								}
+								//jsp에서 보낸 데이터 수집 write.jsp의 <form> 안 input들의 name들
+								String title = request.getParameter("title");
+								String content = request.getParameter("content");
+								String category = request.getParameter("category");
+								//checkbox는 체크하지 않으면 request로 넘어오지 않음(null) 그래서 기본값을 n으로
+								String isNotice = request.getParameter("isNotice");
+								if (isNotice == null) isNotice = "N"; //체크 안하면 null
+								
+								BoardVO vo = new BoardVO();
+								vo.setTitle(title);
+								vo.setContent(content);
+								vo.setCategory(category);
+								vo.setIsNotice(isNotice);
+								//세션에 저장된 로그인 정보를 받는다 
+								//왜 request로 안받나? -> 사용자가 html 수정 해서 계정을 admin으로 바꿀 수 있음 보안 취약
+								vo.setWriter(loginVO.getpId());
+								
+								boardService.writeBoard(vo);
+								//redirect쓰는 이유? 새 글 등록 후 새 요청. 새로고침 시 중복 등록 방지
+								response.sendRedirect("ProjController?cmd=boardList");
+								return;								
+								
+			}
+			
+			case "view":	 {
+								//게시글 번호 받기 어디서 받았지? allList.jsp -> onclick="location.href='ProjController?cmd=view&bIdx=${post.bIdx}'">
+								//게시판 목록 클릭 하게 되면 밑 코드로 bIdx를 받아온다.
+								//request.getParameter("bIdx") ->bIdx라는 이름의 값을 문자열로 꺼내라 그래서 int로 바꿔줌
+								int bIdx = Integer.parseInt(request.getParameter("bIdx"));
+								
+								//조회수 증가 새로고침 했을때 조회수 안늘어나게 or 같은 계정 조회수 안늘어나게 추가해야함
+								boardService.increaseViews(bIdx);
+								
+								//게시글 상세 조회 (bIdx로 게시글 가져오고 board에 담자)
+								BoardVO board = boardService.boardById(bIdx);
+								
+								//request에 데이터 담아 (왜 session안씀? 게시글은 1회성 화면 출력 데이터 → request 사용
+								//session은 로그인 상태처럼 장기간 유지 데이터에 사용)
+							    request.setAttribute("board", board);
+							    //jsp에 전달
+							    request.getRequestDispatcher("proj/view.jsp")
+							           .forward(request, response);
+							    return;
+			}
+			
+			
+			case "editPage": {	
+								//로그인 정보 확인
+								HttpSession session = request.getSession();
+								ProjVO loginVO = (ProjVO) session.getAttribute("returnVO");
+								//로그인 하지 않았다면 로그인 페이지로 이동
+								if(loginVO == null) {
+									response.sendRedirect("ProjController?cmd=loginPage");
+									return;
+								}
+								//글 번호 들고 가서 수정할 글 가져와서 글 작성자와 로그인 정보 확인
+								int bIdx = Integer.parseInt(request.getParameter("bIdx"));
+								BoardVO board = boardService.boardById(bIdx);
+								
+								//작성자거나 관리자인지 확인
+								if (!loginVO.getpId().equals(board.getWriter()) && !"ADMIN".equals(loginVO.getRole())) {
+									response.sendRedirect("ProjController?cmd=view&bIdx=" + bIdx);
+									return;
+								}
+								
+							    request.setAttribute("board", board);
+							    request.getRequestDispatcher("proj/edit.jsp")
+							           .forward(request, response);
+							    return;
+								
+								
+			}
+			
+			case "edit":	{	
+								HttpSession session = request.getSession();
+								ProjVO loginVO = (ProjVO) session.getAttribute("returnVO");
+								
+								if(loginVO == null) {
+									response.sendRedirect("ProjController?cmd=loginPage");
+									return;
+								}
+								int bIdx = Integer.parseInt(request.getParameter("bIdx"));
+								
+								String title = request.getParameter("title");
+								String content = request.getParameter("content");
+								String category = request.getParameter("category");
+								
+								String isNotice = request.getParameter("isNotice");
+								//왜 안넘어올까...mapper에서 bIdx -> bidx 로 오타
+								System.out.println("title = " + title);
+								System.out.println("content = " + content);
+								System.out.println("category = " + category);
+								System.out.println("isNotice = " + isNotice);
+								
+								if (isNotice == null) isNotice = "N"; //체크 안하면 null
+								
+								BoardVO vo = new BoardVO();
+								vo.setbIdx(bIdx);
+								vo.setTitle(title);
+								vo.setContent(content);
+								vo.setCategory(category);
+								vo.setIsNotice(isNotice);
+								
+								boardService.editBoard(vo);
+								
+								response.sendRedirect("ProjController?cmd=view&bIdx=" + bIdx);
+								return;	
 
-
-		
+			}
+			
+			case "delete":	{
+								HttpSession session = request.getSession();
+								ProjVO loginVO = (ProjVO) session.getAttribute("returnVO");
+								
+								if(loginVO == null) {
+									response.sendRedirect("ProjController?cmd=loginPage");
+									return;
+								}
+								//글번호 들고가서 이 번호 글 삭제하기
+								int bIdx = Integer.parseInt(request.getParameter("bIdx"));
+								boardService.deleteBoard(bIdx);
+								
+								response.sendRedirect("ProjController?cmd=boardList");
+								return;
+								
+								
+			}
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
 		}
 		
 

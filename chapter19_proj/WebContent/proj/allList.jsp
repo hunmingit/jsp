@@ -33,7 +33,7 @@
       <span>
         ${sessionScope.returnVO.pId} <!-- 로그인 성공 시 Controller가 session에 저장한 VO.pid가 노출됨 p_id로 받아서 오류 났었음 여기를 p_id로 바꿀까 하다 그냥 mapper 수정-->
         <c:if test="${sessionScope.returnVO.role eq 'ADMIN'}"> <!-- role이 'ADMIN' 이면 ㄱ(관리자) 표시 -->
-          (관리자)
+          (관리자)<!--여기에 3/3과 같이 추천을 줄 수 있는 남은 수 표시 -->
         </c:if>
       </span>
 		<a href="ProjController?cmd=logout">로그아웃</a> <!-- 로그아웃 기능 -->
@@ -94,7 +94,7 @@
 
     <c:forEach var="i" begin="${pageMaker.startPage}" end="${pageMaker.endPage}">
       <a href="?cmd=boardList&page=${i}"
-         class="${pageMaker.page == i ? 'active' : ''}"> <!-- 페이지가 i 와 같다면 active를 줘라 css a.active -->
+         class="${pageMaker.page == i ? 'active' : ''}"> <!-- 페이지가 i 와 같다면 active를 줘라 css a.active 번호 창 검은색으로 바꾸기-->
         ${i}
       </a>
     </c:forEach>

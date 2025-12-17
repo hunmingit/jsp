@@ -6,7 +6,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 <mapper namespace="org.joonzis.mybatis.mapper.board"> 
     <!-- 공지글 목록 -->
     <select id="NoticeList" resultType="org.joonzis.vo.BoardVO">
-        SELECT *
+        SELECT         
+        b_idx AS bIdx,
+        views,
+        likes,
+        writer,
+        title,
+        content,
+        category,
+        isNotice,
+        b_reg_date AS regDate
         FROM Board
         WHERE isNotice = 'Y'
         ORDER BY b_idx DESC
@@ -14,7 +23,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
     <!-- 일반 게시글 목록 (페이징) -->
     <select id="BoardList" parameterType="map" resultType="org.joonzis.vo.BoardVO">
-        SELECT *
+        SELECT        
+        b_idx AS bIdx,
+        views,
+        likes,
+        writer,
+        title,
+        content,
+        category,
+        isNotice,
+        b_reg_date AS regDate
         FROM (
             SELECT ROWNUM rnum, <!-- 최신글 부터 글번호 붙임 rnum은 alias -->
             b.* <!-- 2. 게시글의 모든 컬럼을 가져와 -->
@@ -34,4 +52,49 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         FROM Board
         WHERE isNotice = 'N'
     </select>
+    
+    <!-- 글쓰기 -->
+   	<insert id="insertBoard" parameterType="org.joonzis.vo.BoardVO">
+   		 INSERT INTO Board ( b_idx, title, content, writer, category, isNotice, views, likes, b_reg_date)
+		VALUES (board_seq.NEXTVAL, #{title}, #{content}, #{writer}, #{category}, #{isNotice}, 0, 0, SYSDATE)
+	</insert>
+	
+	<!-- 게시글 상세보기 -->
+	<select id="boardById" parameterType="int" resultType="org.joonzis.vo.BoardVO">
+		SELECT        
+		b_idx AS bIdx,
+        title,
+        content,
+        writer,
+        category,
+        views,
+        likes,
+        isNotice,
+        b_reg_date AS regDate FROM Board WHERE b_idx = #{bIdx}
+	</select>
+	
+	<!--조회수 증가-->
+	<update id="increaseViews" parameterType="org.joonzis.vo.BoardVO">
+		UPDATE Board SET Views = Views+1 WHERE b_idx = #{bIdx}
+	</update>
+
+	<!--글 수정하기-->
+	<update id="editBoard" parameterType="org.joonzis.vo.BoardVO">
+		update Board
+		 set title = #{title}, content = #{content}, category = #{category}, isNotice = #{isNotice}
+		where b_idx = #{bIdx}
+	</update>	
+	
+	<!--게시글 삭제하기-->
+	<delete id="deleteBoard" parameterType="int">
+		DELETE FROM Board WHERE b_idx = #{bIdx}
+	</delete>
+	
+    
+    
+    
+    
+    
+    
+    
 </mapper>

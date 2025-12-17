@@ -98,6 +98,7 @@ a {
 /*글 상세 제목은 왼쪽으로 정렬 td:nth-child(2) td중 2번째 요소만 적용한다!*/
 .board-table td:nth-child(2) {
 	text-align: left;
+	cursor: pointer;
 }
 
 
