@@ -3,8 +3,8 @@ package org.joonzis.util;
 public class PageMaker {
 
 	    private int page;          // 현재 페이지
-	    private int totalCount;    // 전체 게시글 수
-	    private int perPage;       // 페이지당 게시글 수
+	    private int totalCount;    // 전체 게시글 수 
+	    private int perPage;       // 페이지당 게시글 수 BoardServiceImpl 에서 상수 10으로 선언
 
 	    private int startPage;     // 시작 페이지 번호
 	    private int endPage;       // 끝 페이지 번호
@@ -15,7 +15,7 @@ public class PageMaker {
 	    // 페이지 버튼 개수 (ex: 1 2 3 4 5)
 	    private static final int DISPLAY_PAGE_NUM = 5;
 
-
+	    //BoardServiceImpl에서 전달 받음
 	    public PageMaker(int page, int totalCount, int perPage) {
 	        this.page = page;
 	        this.totalCount = totalCount;
@@ -24,21 +24,23 @@ public class PageMaker {
 	        calcPaging();
 	    }
 
-	    /**
-	     * 페이지네이션 계산
-	     */
+	    //페이지네이션 계산
 	    private void calcPaging() {
 
-	        // 끝 페이지 계산
+	        // 끝 페이지 계산 ceil은 소수값이 존재 할 때 올림
+	    	//만약 현재 페이지가 3인 경우 ceil(3/5) = 1 * 5 = 5 -> endpage
 	        endPage = (int) Math.ceil(page / (double) DISPLAY_PAGE_NUM) * DISPLAY_PAGE_NUM;
 
 	        // 시작 페이지 계산
+	        //만약 endpage가 5인 경우 5-5+1 = 1 
 	        startPage = endPage - DISPLAY_PAGE_NUM + 1;
 
-	        // 실제 마지막 페이지
+	        // 실제 마지막 페이지 
+	        //전체 글 42개, 페이지당(perpage)10개 42/10 = 4.2 ceil로 올림 -> 5
 	        int realEnd = (int) Math.ceil(totalCount / (double) perPage);
 
 	        // 끝 페이지 보정
+	        // 전체 글 수가 12여서 2페이지밖에 없을 때 보정 없으면 endpage가 5로 출력됨 그걸 방지
 	        if (endPage > realEnd) {
 	            endPage = realEnd;
 	        }

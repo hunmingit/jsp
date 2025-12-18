@@ -19,7 +19,7 @@
     <div style="text-align:center; margin-bottom: 20px;">
       <div style="display:flex; justify-content:center; align-items:center;">
          <div> <img src="images/logo.png" width="30" style="margin-right:10px;"></div>
-        <span style="font-size:32px; color:#dc2626; letter-spacing:3px;">커뮤니티</span>
+        <span style="font-size:32px; color:#dc2626; letter-spacing:3px;">구구절절</span>
       </div>
     </div>
 

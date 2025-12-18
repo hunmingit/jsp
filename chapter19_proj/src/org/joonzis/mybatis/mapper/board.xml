@@ -89,12 +89,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<delete id="deleteBoard" parameterType="int">
 		DELETE FROM Board WHERE b_idx = #{bIdx}
 	</delete>
-	
-    
-    
-    
-    
-    
-    
+   
     
 </mapper>

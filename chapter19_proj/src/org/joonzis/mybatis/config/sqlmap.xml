@@ -20,6 +20,7 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
 	<mappers>
         <mapper resource="org/joonzis/mybatis/mapper/proj.xml"/>
         <mapper resource="org/joonzis/mybatis/mapper/board.xml"/>       
+        <mapper resource="org/joonzis/mybatis/mapper/boardLike.xml"/> 
 	</mappers>
 	
 </configuration>

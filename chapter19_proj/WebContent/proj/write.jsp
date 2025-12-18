@@ -17,12 +17,15 @@
 	<form method="post" action="ProjController">
 		<input type="hidden" name="cmd" value="write">
 		
-		<div>
+		<div class="top-bar">
 			<select name="category">
 		        <option value="잡담">잡담</option>
         		<option value="질문">질문</option>
         		<option value="정보">정보</option>
 			</select>
+    		<div class="logo">
+    		 	 <div> <img src="images/logo.png" width="30" style="margin-right:5px;"></div>
+			</div>
 		</div>
 		
 		<div>

@@ -12,6 +12,12 @@ function deletePost(bIdx) {
 		}
 }
 
+function likePost(bIdx) {
+    if (!confirm("이 게시글을 추천하시겠습니까?")) {
+        return;
+    }
 
+    location.href = "ProjController?cmd=like&bIdx=" + bIdx;
+}
 
 

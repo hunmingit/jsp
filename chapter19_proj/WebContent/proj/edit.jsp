@@ -18,12 +18,15 @@
 		<input type="hidden" name="cmd" value="edit">
 		<input type="hidden" name="bIdx" value="${board.bIdx}">
 		
-		<div>
+		<div class="top-bar">
 			<select name="category">
 	            <option value="잡담" ${board.category eq '잡담' ? 'selected' : ''}>잡담</option>
 	            <option value="질문" ${board.category eq '질문' ? 'selected' : ''}>질문</option>
 	            <option value="정보" ${board.category eq '정보' ? 'selected' : ''}>정보</option>
 			</select>
+    		<div class="logo">
+    		 	 <div> <img src="images/logo.png" width="30" style="margin-right:5px;"></div>
+			</div>
 		</div>
 		
 		<div>

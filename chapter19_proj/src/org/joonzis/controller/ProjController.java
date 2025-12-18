@@ -91,7 +91,7 @@ public class ProjController extends HttpServlet {
 									return; // 로그인 성공
 								}else { 
 									//로그인 실패는 재시도 목적 forward가 적합 (새로고침) request + forward
-									//sql에서 데이터 넣을때도 암호값으로 넣어야한다. 그냥 admin/admin 넣었다가 개고생함
+									//sql에서 데이터 넣을때도 암호값으로 넣어야한다. 그냥 admin/admin 넣었다가 개고생함 비밀번호 암호화 했다면 기억!
 									//근데 왜 또 오류가.. -> boardList에서 forward 사용 했는데 break사용해서 밑에서 또 forward탐
 									request.setAttribute("msg", "아이디 또는 비밀번호가 틀렸습니다.");
 									path = "proj/login.jsp";
@@ -101,21 +101,31 @@ public class ProjController extends HttpServlet {
 			
 			case "boardList": {
 							    int page = 1; //1로 줘서 case "boardList" 타면 1페이지로 감
+							    HttpSession session = request.getSession();
+							    ProjVO loginVO = (ProjVO) session.getAttribute("returnVO");
+				
+							    if (loginVO == null) {
+							        response.sendRedirect("ProjController?cmd=loginPage");
+							        return;
+							    }
+							    int todayLike = boardService.todayLikeCount(loginVO.getpId());
+							    request.setAttribute("todayLike", todayLike);			    
 							    //페이지 클릭 시 ?cmd=boardList&page=3
 							    //request.getParameter("page") 코드가 문자열 "3"반환 Integer로 int 3 확정
 							    if (request.getParameter("page") != null) {
 							        page = Integer.parseInt(request.getParameter("page"));
 							    }
 							    //isNotice = 'Y' 인 관리자 공지글만 가져오는 서비스 호출 페이지 필요없음
-							    List<BoardVO> noticeList = boardService.getNoticeList();
+							    List<BoardVO> noticeList = boardService.NoticeList();
 							    //현재 페이지에 해당하는 일반 게시글 목록 내부에서 시작 글 번호, 끝 글 번호(LIMIT/ROWNUM 계산)
-							    List<BoardVO> postList = boardService.getBoardList(page);
+							    List<BoardVO> postList = boardService.BoardList(page);
 							    //페이지네이션 정보 전용 객체
-							    PageMaker pageMaker = boardService.getPageMaker(page);
+							    PageMaker pageMaker = boardService.PageMaker(page);
 				
 							    request.setAttribute("noticeList", noticeList);
 							    request.setAttribute("postList", postList);
 							    request.setAttribute("pageMaker", pageMaker);
+							    
 				
 							    request.getRequestDispatcher("proj/allList.jsp").forward(request, response);
 							    return; //break주면 switch문만 종료 또 doget() forward()를 해 오류남 path만 설정할 때 break를 쓰자
@@ -170,7 +180,7 @@ public class ProjController extends HttpServlet {
 								//request.getParameter("bIdx") ->bIdx라는 이름의 값을 문자열로 꺼내라 그래서 int로 바꿔줌
 								int bIdx = Integer.parseInt(request.getParameter("bIdx"));
 								
-								//조회수 증가 새로고침 했을때 조회수 안늘어나게 or 같은 계정 조회수 안늘어나게 추가해야함
+								//조회수 증가 새로고침 했을때 조회수 안늘어나게 or 같은 계정일 경우 조회수 안늘어나게 추가해야함
 								boardService.increaseViews(bIdx);
 								
 								//게시글 상세 조회 (bIdx로 게시글 가져오고 board에 담자)
@@ -197,8 +207,7 @@ public class ProjController extends HttpServlet {
 								}
 								//글 번호 들고 가서 수정할 글 가져와서 글 작성자와 로그인 정보 확인
 								int bIdx = Integer.parseInt(request.getParameter("bIdx"));
-								BoardVO board = boardService.boardById(bIdx);
-								
+								BoardVO board = boardService.boardById(bIdx);								
 								//작성자거나 관리자인지 확인
 								if (!loginVO.getpId().equals(board.getWriter()) && !"ADMIN".equals(loginVO.getRole())) {
 									response.sendRedirect("ProjController?cmd=view&bIdx=" + bIdx);
@@ -264,9 +273,41 @@ public class ProjController extends HttpServlet {
 								
 								response.sendRedirect("ProjController?cmd=boardList");
 								return;
-								
-								
+													
 			}
+			
+			case "like":  	{
+							    HttpSession session = request.getSession();
+							    ProjVO loginVO = (ProjVO) session.getAttribute("returnVO");
+				
+							    if (loginVO == null) {
+							        response.sendRedirect("ProjController?cmd=loginPage");
+							        return;
+							    }
+							    
+							    int bIdx = Integer.parseInt(request.getParameter("bIdx"));
+							    //이 로그인 계정 몇 번 좋아요 눌렀는지 확인
+
+							    //좋아요 누르기
+							    //외 않되 false 잘넘어옴 false일때 알럿 
+							    //view.jsp 에 msg를 안뿌림 ;
+							    boolean success = boardService.likeBoard(loginVO.getpId(), bIdx);
+							    System.out.println("success = " + success);
+							    //false면 session에 메시지 저장
+							    if (!success) {
+							        session.setAttribute("msg", "오늘 추천 가능 횟수(3회)를 모두 사용했습니다.");
+							        
+							    }
+							    
+							    response.sendRedirect("ProjController?cmd=view&bIdx=" + bIdx);
+							    return;
+			}
+			
+//			case "serch":	{
+//				
+//			}
+			//case "category":
+			
 			
 			
 			

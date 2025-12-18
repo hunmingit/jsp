@@ -31,6 +31,9 @@
 <hr>
 
 <div>
+	<button type="button" onclick="likePost(${board.bIdx})">
+    👍 좋아요 (${board.likes})
+	</button>
 	<button onclick="location.href='ProjController?cmd=boardList'">←목록으로</button>
 		<!-- 글쓴이와 아이디가 같다면 or 어드민이면  -->
 	    <c:if test="${sessionScope.returnVO.pId eq board.writer
@@ -42,6 +45,15 @@
             삭제
         </button>
     </c:if>
+    <!-- 남은 좋아요 수 없을때 알럿(세션에 저장된 메시지가 있으면 알럿 출력) -->
+    <c:if test="${not empty sessionScope.msg}">
+	    <script>
+	        alert("${sessionScope.msg}");
+	    </script>
+	    <!-- 알럿 한번 출력 했으면 session에 저장된 msg 삭제 -->
+		 <c:remove var="msg" scope="session"/>
+	</c:if>
+    
 </div>
 
 </body>

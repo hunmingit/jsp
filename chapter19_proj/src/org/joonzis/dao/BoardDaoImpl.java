@@ -21,13 +21,13 @@ public class BoardDaoImpl implements BoardDao {
     }
 	//공지글 목록
     @Override
-    public List<BoardVO> selectNoticeList() {
+    public List<BoardVO> NoticeList() {
     	return sqlSession.selectList("NoticeList");
     }
     
     //일반 게시글 목록(페이징)
     @Override
-    public List<BoardVO> selectBoardList(int startRow, int endRow) {
+    public List<BoardVO> BoardList(int startRow, int endRow) {
         Map<String, Object> map = new HashMap<>();
         map.put("startRow", startRow);
         map.put("endRow", endRow);
@@ -35,7 +35,7 @@ public class BoardDaoImpl implements BoardDao {
     }
     //전체 게시글 수
     @Override
-    public int selectBoardCount() {
+    public int BoardCount() {
     	return sqlSession.selectOne("BoardCount");
     }
     //글쓰기
@@ -62,6 +62,26 @@ public class BoardDaoImpl implements BoardDao {
     @Override
     public void deleteBoard(int bIdx) {
     	sqlSession.delete("deleteBoard", bIdx);   	
+    }
+    //오늘 이 계정이 누른 좋아요 수
+    @Override
+    public int todayLikeCount(String pId) {
+    	return sqlSession.selectOne("todayLikeCount", pId);
+    }
+    //좋아요 누르기
+    @Override
+    public void insertBoardLike(String pId, int bIdx) {
+    	Map<String, Object> map = new HashMap<>();
+    	map.put("pId", pId);
+    	map.put("bIdx", bIdx);
+    	sqlSession.insert("insertBoardLike", map);
+      	
+    }
+    //게시물 좋아요 수 증가
+    @Override
+    public void increaseBoardLike(int bIdx) {
+    	sqlSession.update("increaseBoardLike", bIdx);
+    	
     }
 	
 }

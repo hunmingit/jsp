@@ -12,8 +12,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</select>
 	<!-- 회원가입 -->
 	<insert id="insertProj" parameterType="org.joonzis.vo.ProjVO">
-    INSERT INTO proj 
-    VALUES (proj_seq.NEXTVAL, #{pId}, #{pPw}, 'user', SYSDATE)
+		INSERT INTO proj (
+		p_idx, p_id, p_pw, role, p_regdate) 
+		VALUES (proj_seq.NEXTVAL, #{pId}, #{pPw}, 'USER', SYSDATE)
 	</insert>
 	<!-- 로그인 -->
 	<select id="loginProj" parameterType="org.joonzis.vo.ProjVO" resultType="org.joonzis.vo.ProjVO">

@@ -6,13 +6,13 @@ import org.joonzis.vo.BoardVO;
 
 public interface BoardService {
 	//공지글 목록 조회 (페이징 x 상단 고정)
-	List<BoardVO> getNoticeList();
+	List<BoardVO> NoticeList();
 	//일반 게시글 목록 조회 (페이징 o)
-	List<BoardVO> getBoardList(int page);
+	List<BoardVO> BoardList(int page);
 	//전체 일반 게시글 개수(공지글 제외)
-	int getBoardCount();
+	int BoardCount();
 	//페이지 정보 생성 사용자가 클릭한 페이지 번호를 전달
-	PageMaker getPageMaker(int page);
+	PageMaker PageMaker(int page);
 	//글쓰기
 	void writeBoard(BoardVO vo);
 	//bId로 글 상세보기
@@ -23,4 +23,8 @@ public interface BoardService {
 	void editBoard(BoardVO vo);
 	//글 삭제
 	void deleteBoard(int bIdx);
+	//좋아요 
+	int todayLikeCount(String pId);
+	//게시글 좋아요 수 증가
+	boolean likeBoard(String pId, int bIdx);
 }

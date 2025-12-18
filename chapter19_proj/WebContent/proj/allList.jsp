@@ -16,8 +16,8 @@
   <!-- ===== 헤더 ===== -->
   <div class="board-header">
     <div class="logo">
-      <div> <img src="images/logo.png" width="30" style="margin-right:10px;">
-      		 <span class="logo-title">커뮤니티</span> </div>
+      <div> <img src="images/logo.png" width="30" style="margin-right:5px;">
+      		 <span class="logo-title">구구절절</span> </div>
     <form method="get" action="ProjController"> <!-- 게시글 목록 조회 요청 -->
       <input type="hidden" name="cmd" value="boardList">
       <select name="category">
@@ -33,8 +33,11 @@
       <span>
         ${sessionScope.returnVO.pId} <!-- 로그인 성공 시 Controller가 session에 저장한 VO.pid가 노출됨 p_id로 받아서 오류 났었음 여기를 p_id로 바꿀까 하다 그냥 mapper 수정-->
         <c:if test="${sessionScope.returnVO.role eq 'ADMIN'}"> <!-- role이 'ADMIN' 이면 ㄱ(관리자) 표시 -->
-          (관리자)<!--여기에 3/3과 같이 추천을 줄 수 있는 남은 수 표시 -->
+          (관리자) <!--여기에 3/3과 같이 추천을 줄 수 있는 남은 수 표시 -->
         </c:if>
+			<span>
+			  추천 가능: ${3 - todayLike}/3
+			</span>
       </span>
 		<a href="ProjController?cmd=logout">로그아웃</a> <!-- 로그아웃 기능 -->
 		<a href="ProjController?cmd=writePage" class="write-btn">글쓰기</a>

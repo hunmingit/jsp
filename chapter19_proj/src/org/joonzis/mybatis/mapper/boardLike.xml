@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="org.joonzis.mybatis.mapper.boardLike"> 
+	<!-- 오늘 좋아요 횟수 -->
+    <select id="todayLikeCount" resultType="int">
+		SELECT COUNT(*)
+	    FROM board_like
+	    WHERE p_id = #{pId}
+	    AND TRUNC(like_date) = TRUNC(SYSDATE) 
+    </select>
+    <!-- 좋아요  추가 -->
+    <insert id="insertBoardLike" parameterType="org.joonzis.vo.BoardLikeVO">
+   	    INSERT INTO board_like (like_idx, b_idx, p_id, like_date)
+ 	    VALUES (board_like_seq.NEXTVAL, #{bIdx}, #{pId}, SYSDATE)
+    </insert>
+    <!-- 게시글 좋아요 증가 -->
+    <update id="increaseBoardLike" parameterType="int">
+    	update board set likes = likes + 1 where b_idx = #{bIdx}
+    </update>
+    
+    
+    
+</mapper>
