@@ -8,7 +8,7 @@
 <title>글쓰기</title>  <%-- 브라우저 탭에 표시될 제목 --%>
 <link rel="stylesheet" href="css/write.css"> <%-- 글쓰기 페이지 전용 CSS 연결 --%>
 <%-- 파비콘(브라우저 작은 아이콘) 설정 
-실제 아이콘 파일을 가리키지 않는다(안 쓰면 콘솔에 favicon 에러 뜸) --%>
+실제 아이콘 파일을 가리키지 않는다(안 쓰면 콘솔에 favicon 에러 뜸 나중에 추가 해보기) --%>
 <link rel="shortcut icon" href="#">
 </head>
 <body>
